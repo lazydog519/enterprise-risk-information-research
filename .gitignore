@@ -1,0 +1,13 @@
+.venv/
+.runtime/
+data/
+runs/
+models/
+*.gguf
+*.partial
+__pycache__/
+*.pyc
+settings.local.json
+.env
+.env.*
+!.env.example

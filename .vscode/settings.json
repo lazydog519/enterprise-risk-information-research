@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "files.encoding": "utf8",
+  "files.exclude": {"**/__pycache__": true},
+  "search.exclude": {".venv": true, ".runtime": true, "data": true, "runs": true}
+}

@@ -1,0 +1,15 @@
+{
+  "status": "newly_downloaded_development_material_not_final_corpus",
+  "sources": [
+    {
+      "company": "宁德时代新能源科技股份有限公司",
+      "title": "2025年年度报告",
+      "publication_date": "2026-03-10",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-03-10/1225002214.PDF",
+      "sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+      "pdf_pages_selected": [14, 41],
+      "selection_reason": "管理层讨论与分析的开发性试读，尚未确认最终行业或样本边界",
+      "redistribution": "原PDF不提交Git；公开可访问不等于开放再分发许可"
+    }
+  ]
+}
