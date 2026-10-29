@@ -11,3 +11,23 @@ settings.local.json
 .env
 .env.*
 !.env.example
+
+# Public repository: keep papers, private reviews and source materials local.
+*.pdf
+*.docx
+*.doc
+*.caj
+*.xls
+*.xlsx
+*.key
+*.pem
+*.p12
+*.pfx
+private/
+papers/
+annotations/
+reviews/
+*.log
+*.zip
+*.dll
+*.exe

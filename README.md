@@ -1,4 +1,16 @@
-# 企业风险文本预实验
+# Enterprise Risk Information Research
+
+企业风险信息理解研究：实验代码、核验规则与研究思路。
+
+公开仓库：https://github.com/lazydog519/enterprise-risk-information-research
+
+## 阅读入口
+
+- [研究思路与方法取舍](docs/research-direction.md)：核心问题、候选方法及需要验证的依据。
+- [实验记录](docs/experiment-log.md)：已完成的开发对照及结果边界。
+- [人工核验规则](protocol.md)：陈述定义、字段含义和核验标准。
+
+仓库保存代码、提示词、配置模板和原创研究说明。论文全文、批注、原始资料、模型权重、逐条推理结果及密钥仅保存在本机，不上传。
 
 独立工程，用于原文核查和本地模型试跑，不修改其他 VS Code 项目。当前没有确定最终主体数据集或创新点。
 
@@ -80,8 +92,10 @@ python -m venv .venv
 
 ## 版本与资料管理
 
-只提交代码、提示词和公开来源说明。`data/`、`runs/`、`.runtime/`、`.venv/`、权重和本地配置不进入Git。
-当前只保存本地Git版本；未指定远程仓库前不创建或推送GitHub仓库。
+只提交代码、提示词、原创研究说明和公开来源元数据。`data/`、`runs/`、`.runtime/`、`.venv/`、论文与批注文件、权重和本地配置不进入Git。
+本地工程连接上述公开仓库，使用 `main` 分支持续维护；完成可用修改并验证后提交并推送，保留同一版本历史。
+
+命名约定：仓库名使用小写连字符；Python文件使用 `snake_case.py`；说明文档使用小写连字符；运行目录采用 `YYYYMMDD_experiment_name_vN`，重新试验使用新目录。日常修改使用普通提交，可复现的阶段基线使用 `vMAJOR.MINOR.PATCH` 标签。研究判断在文档中区分“已观察”“文献方法依据”和“待验证设想”。
 
 模型来源：https://huggingface.co/Qwen/Qwen3-4B-GGUF
 
