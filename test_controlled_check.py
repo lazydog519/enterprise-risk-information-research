@@ -21,9 +21,8 @@ class ControlTests(unittest.TestCase):
             plain, layout = '\n'.join(blocks), '\n\n'.join(blocks)
             page = {'source_id': 's', 'page': 40, 'path': str(pdf), 'text': plain,
                     'sha256': pilot.sha256(pdf.read_bytes())}
-            old = {**page, 'sample_id': 'old', 'text': plain[:500], 'end_char': 500}
             pilot.save_rows(root / 'data/pages.jsonl', [page])
-            pilot.save_rows(root / 'runs/20261029_catl_short_smoke/inputs.jsonl', [old])
+            pilot.save(root / 'public_pilot_sources.json', {'sources': [{'sha256': page['sha256']}]})
             (root / 'prompt.txt').write_text('old', encoding='utf-8')
             (root / 'prompts').mkdir()
             (root / 'prompts/claim_protocol_v1.txt').write_text('new', encoding='utf-8')

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "20261029_paragraph_control_v1",
+  "date": "2026-10-29",
+  "source_sha256": "c15272977147dee7e6935a38ea0e4fd6855370aabb106f54cfe20f7cf6048ec9",
+  "pdf_page": 40,
+  "independent_development_cases": 1,
+  "model": "Qwen/Qwen3-4B-GGUF",
+  "quantization": "Q4_K_M",
+  "asset_manifest": "../../assets.json",
+  "parameters": {"temperature": 0, "seed": 42, "max_tokens": 1800, "timeout_seconds": 480},
+  "prompt_sha256": {
+    "original": "cb793410bb4833bc9898c6a2c981017d52411cc23f9dc58e25e602dc70ca0e43",
+    "clarified": "9777cc40f003c9ea9897cbb0cc32054390f0659d3f9ce605fbe4ff9d734ad5c5"
+  },
+  "cases": [
+    {"id": "A", "input_characters": 500, "clarified_protocol": false, "status": "ok", "finish_reason": "stop", "schema_valid_records": 6, "exact_duplicate_excess": 2, "quotes_not_located": 0, "completion_tokens": 839, "elapsed_seconds": 77.015},
+    {"id": "B", "input_characters": 593, "clarified_protocol": false, "status": "ok", "finish_reason": "stop", "schema_valid_records": 6, "exact_duplicate_excess": 2, "quotes_not_located": 0, "completion_tokens": 1042, "elapsed_seconds": 96.266},
+    {"id": "C", "input_characters": 500, "clarified_protocol": true, "status": "schema_failed", "finish_reason": "stop", "schema_valid_records": null, "exact_duplicate_excess": null, "quotes_not_located": null, "raw_candidate_count": 11, "completion_tokens": 1043, "elapsed_seconds": 103.062},
+    {"id": "D", "input_characters": 593, "clarified_protocol": true, "status": "generation_truncated", "finish_reason": "length", "schema_valid_records": null, "exact_duplicate_excess": null, "quotes_not_located": null, "raw_candidate_count": null, "completion_tokens": 1800, "elapsed_seconds": 185.828}
+  ],
+  "independent_human_annotation_completed": false,
+  "semantic_accuracy": null,
+  "calibration_error": null,
+  "preserved_old_file_count": 17,
+  "preserved_old_hashes_verified": true
+}

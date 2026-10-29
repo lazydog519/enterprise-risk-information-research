@@ -27,6 +27,7 @@ private/
 papers/
 annotations/
 reviews/
+/AGENTS.md
 *.log
 *.zip
 *.dll

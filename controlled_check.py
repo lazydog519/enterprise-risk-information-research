@@ -76,7 +76,14 @@ def prepare(destination):
                           'local_heading': heading,
                           'boundary_note': 'PDF blank-line candidate; cross-page and table blocks require source review'})
             blocks.append(block)
-    old = pilot.rows(pilot.ROOT / 'runs/20261029_catl_short_smoke/inputs.jsonl')[0]
+    previous = pilot.ROOT / 'runs/20261029_catl_short_smoke/inputs.jsonl'
+    if previous.exists():
+        old = pilot.rows(previous)[0]
+    else:
+        source = pilot.load(pilot.ROOT / 'public_pilot_sources.json')['sources'][0]
+        original_page = next(p for p in pages if p['sha256'] == source['sha256'] and p['page'] == 40)
+        old = {**original_page, 'sample_id': original_page['source_id'] + '-p40-0',
+               'text': original_page['text'][:500], 'start_char': 0, 'end_char': 500}
     page = next(p for p in pages if p['source_id'] == old['source_id'] and p['page'] == old['page'])
     relevant = [b for b in blocks if b['page'] == old['page'] and b['kind'] == 'narrative'
                 and b.get('start_char', 10**9) < page['text'].index('十二、报告期内')]
