@@ -64,11 +64,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-dir', type=Path, required=True)
     parser.add_argument('--runtime-only', action='store_true')
+    parser.add_argument('--backend', choices=['cpu', 'vulkan'], default='cpu')
     args = parser.parse_args(argv)
     specs = json.loads((ROOT / 'configs/assets.json').read_text(encoding='utf-8'))
-    archive = ROOT / '.runtime' / 'llama-b11960-cpu.zip'
-    download(specs['runtime'], archive)
-    runtime = ROOT / '.runtime' / 'llama-b11960-cpu'
+    archive = ROOT / '.runtime' / ('llama-b11960-' + args.backend + '.zip')
+    runtime_spec = specs['runtime'] if args.backend == 'cpu' else specs['vulkan_runtime']
+    download(runtime_spec, archive)
+    runtime = ROOT / '.runtime' / ('llama-b11960-' + args.backend)
     runtime.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(archive) as zipped:
         for name in zipped.namelist():

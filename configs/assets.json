@@ -6,6 +6,13 @@
     "size": 24407745,
     "license": "MIT"
   },
+  "vulkan_runtime": {
+    "version": "llama.cpp-b11960-windows-vulkan-x64",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11960/llama-b11960-bin-win-vulkan-x64.zip",
+    "sha256": "bac6914b5e83523eb008c6789eaa12669f93fbc196c3b9e8237b6672323b33e9",
+    "size": 37345851,
+    "license": "MIT"
+  },
   "model": {
     "id": "Qwen/Qwen3-4B-GGUF",
     "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",

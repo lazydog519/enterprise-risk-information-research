@@ -7,12 +7,12 @@ import webbrowser
 
 from . import pilot
 
-COMMANDS = ('results', 'test', 'control', 'bootstrap', 'doctor', 'inventory',
+COMMANDS = ('results', 'test', 'control', 'probe', 'bootstrap', 'doctor', 'inventory',
             'register', 'ingest', 'sample', 'infer', 'audit')
 
 
 def result_target(run_dir=None):
-    run = Path(run_dir or 'runs/20261029_paragraph_control_v1')
+    run = Path(run_dir or 'runs/20261029_structure_probe_v2')
     run = (run if run.is_absolute() else pilot.ROOT / run).resolve()
     runs_root = (pilot.ROOT / 'runs').resolve()
     if run == runs_root or not run.is_relative_to(runs_root):
@@ -21,7 +21,7 @@ def result_target(run_dir=None):
         report = run / name
         if report.is_file():
             return report.as_uri()
-    return 'https://github.com/lazydog519/enterprise-risk-information-research/blob/main/experiments/20261029-paragraph-control/README.md'
+    return 'https://github.com/lazydog519/enterprise-risk-information-research/blob/main/experiments/20261029-structure-probe/README.md'
 
 
 def main(argv=None):
@@ -59,6 +59,9 @@ def main(argv=None):
     elif command == 'bootstrap':
         from .bootstrap_local import main as bootstrap_main
         bootstrap_main(rest)
+    elif command == 'probe':
+        from .structure_probe import main as probe_main
+        probe_main(rest)
     else:
         pilot.main(args)
 

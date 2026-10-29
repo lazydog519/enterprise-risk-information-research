@@ -1,0 +1,90 @@
+{
+  "protocol": "structure-probe-v1",
+  "reference_status": "assistant_source_reviewed_not_independent_human_gold",
+  "sources": {
+    "smic": {
+      "company": "中芯国际",
+      "title": "2025年年度报告",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-03-27/1225037057.PDF",
+      "sha256": "c022cf9323967f66a239ce4f60b30507bc341db6e660a53db9c2966a9ef35531"
+    },
+    "green": {
+      "company": "绿能慧充",
+      "title": "关于签订战略合作协议的公告（2025-038）",
+      "url": "https://static.cninfo.com.cn/finalpage/2025-08-06/1224400480.PDF",
+      "sha256": "da0c829fada767e2fd2b345c790f31dd5807b25bce7f2a85517452c6a4e7417b"
+    },
+    "byd": {
+      "company": "比亚迪",
+      "title": "2025年9月产销快报",
+      "url": "https://www.hkexnews.hk/listedco/listconews/sehk/2025/1001/2025100100080_c.pdf",
+      "sha256": "d5f94593776c216248802ac7308fd5a0db0223a2943371026d6caa73a296fd3d"
+    }
+  },
+  "cases": [
+    {
+      "id": "SMIC-supply", "source": "smic", "role": "risk",
+      "sections": [{"page": 21, "start": "3.供应链风险", "end_before": "财务风险"}],
+      "claim": "中芯国际在2025年报告期内已经发生了重要原材料供应中断。",
+      "reference_label": "U", "dependency": "condition_status",
+      "reference_structure": {"actor": "中芯国际", "event": "重要生产投入品供应短缺等风险", "target": "生产经营及持续发展", "condition": "未来供应或贸易环境出现不利变化", "status": "可能产生不利影响，未确认已经发生", "time": "未来"},
+      "corruption": {"field": "status", "value": "供应中断已经发生"}
+    },
+    {
+      "id": "SMIC-disaster", "source": "smic", "role": "risk",
+      "sections": [{"page": 24, "start": "火灾、爆炸、自然灾害与公用设施供应中断风险", "end_before": "五、报告期内主要经营情况"}],
+      "claim": "中芯国际的制造工厂在2025年报告期内已因上述灾害或公用设施中断风险受到营运影响。",
+      "reference_label": "C", "dependency": "negation_scope",
+      "reference_structure": {"actor": "中芯国际制造工厂", "event": "灾害等风险对营运的影响", "target": "工厂营运", "condition": "上述灾害或供应中断风险", "status": "报告期内未因此受到营运影响，风险仍存在", "time": "2025年报告期"},
+      "corruption": {"field": "status", "value": "报告期内已经因此受到营运影响"}
+    },
+    {
+      "id": "SMIC-arbitration", "source": "smic", "role": "risk",
+      "sections": [{"page": 103, "start": "于 2020 年 5 月 7 日", "end_before": "十、上市公司"}],
+      "claim": "香港高等法院已撤销中芯新技术在2025年11月12日收到的仲裁裁决。",
+      "reference_label": "U", "dependency": "process_status",
+      "reference_structure": {"actor": "中芯新技术", "event": "对仲裁裁决提出撤裁申请", "target": "香港高等法院", "condition": "认为仲裁程序及法律适用有瑕疵", "status": "已申请，未披露撤裁结果", "time": "截至报告日期"},
+      "corruption": {"field": "status", "value": "法院已撤销仲裁裁决"}
+    },
+    {
+      "id": "SMIC-director", "source": "smic", "role": "risk",
+      "sections": [{"page": 103, "start": "香港证监会于", "end_before": "十一、报告期内公司"}],
+      "claim": "报告披露，范仁达被提起法律程序涉及其作为香港资源控股前董事的责任。",
+      "reference_label": "S", "dependency": "entity_role",
+      "reference_structure": {"actor": "范仁达等八名前董事", "event": "香港证监会提起法律程序", "target": "对香港资源控股的董事责任", "condition": "被指涉嫌违反相关责任", "status": "法律程序进行中，尚无约束力裁决", "time": "截至报告日期"},
+      "corruption": {"field": "target", "value": "对中芯国际的董事责任"}
+    },
+    {
+      "id": "GREEN-delivery", "source": "green", "role": "risk_context",
+      "sections": [{"page": 3, "start": "（2）在新疆无人机领域的合作", "end_before": "（3）绿能慧充"}, {"page": 4, "start": "四、重大风险提示", "end_before": "特此公告"}],
+      "claim": "绿能慧充控股子公司中创航空已向新疆商贸物流完成交付42架重载无人直升机。",
+      "reference_label": "U", "dependency": "relation_status",
+      "reference_structure": {"actor": "中创航空（绿能慧充控股子公司）", "event": "合作安排供应42架重载无人直升机", "target": "新疆商贸物流", "condition": "框架合作，具体内容以后续正式协议为准", "status": "合作安排，未披露已完成交付", "time": "未给出交付完成时间"},
+      "corruption": {"field": "status", "value": "已完成42架交付"}
+    },
+    {
+      "id": "GREEN-framework", "source": "green", "role": "risk_context",
+      "sections": [{"page": 4, "start": "四、重大风险提示", "end_before": "特此公告"}],
+      "claim": "本次框架合作约定不构成强制的法律约束，具体合作以后续正式协议为准。",
+      "reference_label": "S", "dependency": "agreement_effect",
+      "reference_structure": {"actor": "绿能慧充与新疆商贸物流", "event": "签订框架性战略合作约定", "target": "后续具体合作事项", "condition": "以后续正式协议为准", "status": "不构成强制法律约束", "time": "公告所述协议"},
+      "corruption": {"field": "status", "value": "已经构成强制法律约束"}
+    },
+    {
+      "id": "BYD-audit", "source": "byd", "role": "nonrisk_control",
+      "sections": [{"page": 2, "start": "務請注意", "end_before": "承董事會命"}],
+      "claim": "比亚迪本次披露的2025年9月产销量已经公司核数师确认。",
+      "reference_label": "C", "dependency": "verification_status",
+      "reference_structure": {"actor": "比亚迪", "event": "披露2025年9月产销量", "target": "月度产销数据", "condition": "或会调整并待最终确认", "status": "未经审核，亦未经核数师确认", "time": "2025年9月"},
+      "corruption": {"field": "status", "value": "已经核数师确认"}
+    },
+    {
+      "id": "BYD-volume", "source": "byd", "role": "nonrisk_control",
+      "sections": [{"page": 1, "start": "本公司董事會謹此宣佈", "end_before": "－乘用車"}, {"page": 2, "start": "務請注意", "end_before": "承董事會命"}],
+      "claim": "比亚迪在这份快报中披露2025年9月新能源汽车销量为396270辆。",
+      "reference_label": "S", "dependency": "table_role",
+      "reference_structure": {"actor": "比亚迪", "event": "披露新能源汽车月度销量396270辆", "target": "新能源汽车销量而非产量", "condition": "数据未经审核且待最终确认", "status": "快报已披露，不代表审计确认", "time": "2025年9月"},
+      "corruption": {"field": "event", "value": "披露新能源汽车月度销量405554辆"}
+    }
+  ]
+}

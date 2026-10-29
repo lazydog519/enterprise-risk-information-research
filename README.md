@@ -1,16 +1,19 @@
 # Enterprise Risk Information Research
 
-企业风险文本实验：数据来源、处理流程、对照设置与结果。
+企业风险信息理解实验：从企业公开披露文本提取主体、事件关系、条件和状态，核查中间结构对最终判断的影响。仓库保存实验代码、数据来源、固定设置和结果。
 
 ## 实验索引
 
 |实验|设计与结果|结果文件|
 |---|---|---|
+|20261029：结构信息利用（GPU）|[实验说明](experiments/20261029-structure-probe/README.md)|[results.json](experiments/20261029-structure-probe/results.json)|
 |20261029：段落完整性 × 任务规则|[实验说明](experiments/20261029-paragraph-control/README.md)|[results.json](experiments/20261029-paragraph-control/results.json)|
 
 直接阅读上方的“实验说明”。JSON是程序记录；当前页面及实验说明是阅读入口。
 
 本地查看已有结果：`.\.venv\Scripts\python.exe -m risk_text_pilot results`。在VS Code也可选择“终端 → 运行任务 → 查看已有结果（不运行模型）”。
+
+默认打开最新的结构利用对照；查看旧段落实验时加 `--run-dir runs/20261029_paragraph_control_v1`。网页只查看已保存结果，不重新推理。
 
 ## 工程目录
 

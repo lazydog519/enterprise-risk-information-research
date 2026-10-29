@@ -1,0 +1,169 @@
+{
+  "case_count": 8,
+  "source_count": 3,
+  "expected_calls": 40,
+  "recorded_calls": 40,
+  "extraction_successes": 8,
+  "reference_status": "assistant_source_reviewed_not_independent_human_gold",
+  "semantic_accuracy": null,
+  "calibration_error": null,
+  "reference_corrupted_pairs": 8,
+  "reference_corrupted_label_changes": 2,
+  "conditions": {
+    "direct": {
+      "completed": 8,
+      "draft_reference_agreement": 6,
+      "changed_from_direct": 0,
+      "improved_vs_draft": 0,
+      "worsened_vs_draft": 0,
+      "failed_or_skipped": 0
+    },
+    "generated": {
+      "completed": 8,
+      "draft_reference_agreement": 7,
+      "changed_from_direct": 3,
+      "improved_vs_draft": 2,
+      "worsened_vs_draft": 1,
+      "failed_or_skipped": 0
+    },
+    "reference": {
+      "completed": 8,
+      "draft_reference_agreement": 8,
+      "changed_from_direct": 2,
+      "improved_vs_draft": 2,
+      "worsened_vs_draft": 0,
+      "failed_or_skipped": 0
+    },
+    "corrupted": {
+      "completed": 8,
+      "draft_reference_agreement": 6,
+      "changed_from_direct": 1,
+      "improved_vs_draft": 0,
+      "worsened_vs_draft": 0,
+      "failed_or_skipped": 0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "SMIC-supply",
+      "source": "smic",
+      "role": "risk",
+      "dependency": "condition_status",
+      "claim": "中芯国际在2025年报告期内已经发生了重要原材料供应中断。",
+      "reference_label": "U",
+      "labels": {
+        "direct": "C",
+        "generated": "U",
+        "reference": "U",
+        "corrupted": "C"
+      }
+    },
+    {
+      "case_id": "SMIC-disaster",
+      "source": "smic",
+      "role": "risk",
+      "dependency": "negation_scope",
+      "claim": "中芯国际的制造工厂在2025年报告期内已因上述灾害或公用设施中断风险受到营运影响。",
+      "reference_label": "C",
+      "labels": {
+        "direct": "C",
+        "generated": "U",
+        "reference": "C",
+        "corrupted": "C"
+      }
+    },
+    {
+      "case_id": "SMIC-arbitration",
+      "source": "smic",
+      "role": "risk",
+      "dependency": "process_status",
+      "claim": "香港高等法院已撤销中芯新技术在2025年11月12日收到的仲裁裁决。",
+      "reference_label": "U",
+      "labels": {
+        "direct": "C",
+        "generated": "U",
+        "reference": "U",
+        "corrupted": "S"
+      }
+    },
+    {
+      "case_id": "SMIC-director",
+      "source": "smic",
+      "role": "risk",
+      "dependency": "entity_role",
+      "claim": "报告披露，范仁达被提起法律程序涉及其作为香港资源控股前董事的责任。",
+      "reference_label": "S",
+      "labels": {
+        "direct": "S",
+        "generated": "S",
+        "reference": "S",
+        "corrupted": "S"
+      }
+    },
+    {
+      "case_id": "GREEN-delivery",
+      "source": "green",
+      "role": "risk_context",
+      "dependency": "relation_status",
+      "claim": "绿能慧充控股子公司中创航空已向新疆商贸物流完成交付42架重载无人直升机。",
+      "reference_label": "U",
+      "labels": {
+        "direct": "U",
+        "generated": "U",
+        "reference": "U",
+        "corrupted": "U"
+      }
+    },
+    {
+      "case_id": "GREEN-framework",
+      "source": "green",
+      "role": "risk_context",
+      "dependency": "agreement_effect",
+      "claim": "本次框架合作约定不构成强制的法律约束，具体合作以后续正式协议为准。",
+      "reference_label": "S",
+      "labels": {
+        "direct": "S",
+        "generated": "S",
+        "reference": "S",
+        "corrupted": "S"
+      }
+    },
+    {
+      "case_id": "BYD-audit",
+      "source": "byd",
+      "role": "nonrisk_control",
+      "dependency": "verification_status",
+      "claim": "比亚迪本次披露的2025年9月产销量已经公司核数师确认。",
+      "reference_label": "C",
+      "labels": {
+        "direct": "C",
+        "generated": "C",
+        "reference": "C",
+        "corrupted": "C"
+      }
+    },
+    {
+      "case_id": "BYD-volume",
+      "source": "byd",
+      "role": "nonrisk_control",
+      "dependency": "table_role",
+      "claim": "比亚迪在这份快报中披露2025年9月新能源汽车销量为396270辆。",
+      "reference_label": "S",
+      "labels": {
+        "direct": "S",
+        "generated": "S",
+        "reference": "S",
+        "corrupted": "S"
+      }
+    }
+  ],
+  "run": {
+    "model": "qwen3-4b-pilot-gpu",
+    "model_sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
+    "hardware": "RTX 3050 Ti Laptop 4GB; llama.cpp b11960 Vulkan0; 20/37 GPU layers; 4096 context; 6 CPU threads; single slot",
+    "training_performed": false,
+    "protocol_sha256": "2147845761a90bc02dedf4e2e029eb62c594fe7dc8afbd00535325a443691b3a",
+    "seed": 42,
+    "temperature": 0
+  }
+}
