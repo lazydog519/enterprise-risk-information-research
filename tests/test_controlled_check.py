@@ -5,11 +5,20 @@ import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 
-import controlled_check as control
-import pilot
+from risk_text_pilot import controlled_check as control
+from risk_text_pilot import pilot
 
 
 class ControlTests(unittest.TestCase):
+    def test_legacy_prompt_hash_resolves_after_layout_migration(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'prompts').mkdir()
+            (root / 'prompts/baseline.txt').write_bytes(b'unchanged-original')
+            design = {'old_file_hashes': {'prompt.txt': pilot.sha256(b'unchanged-original')}}
+            with patch.object(pilot, 'ROOT', root):
+                control.verify_old(design)
+
     def test_prepared_factorial_changes_only_context_and_prompt(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -22,9 +31,9 @@ class ControlTests(unittest.TestCase):
             page = {'source_id': 's', 'page': 40, 'path': str(pdf), 'text': plain,
                     'sha256': pilot.sha256(pdf.read_bytes())}
             pilot.save_rows(root / 'data/pages.jsonl', [page])
-            pilot.save(root / 'public_pilot_sources.json', {'sources': [{'sha256': page['sha256']}]})
-            (root / 'prompt.txt').write_text('old', encoding='utf-8')
+            pilot.save(root / 'configs/data-sources.json', {'sources': [{'sha256': page['sha256']}]})
             (root / 'prompts').mkdir()
+            (root / 'prompts/baseline.txt').write_text('old', encoding='utf-8')
             (root / 'prompts/claim_protocol_v1.txt').write_text('new', encoding='utf-8')
             reader = SimpleNamespace(pages=[SimpleNamespace(extract_text=lambda **kw: layout)] * 40)
             out = root / 'runs/control'

@@ -1,7 +1,8 @@
 {
   "version": "2.0.0",
   "tasks": [
-    {"label": "核查运行环境", "type": "process", "command": "${workspaceFolder}/.venv/Scripts/python.exe", "args": ["-X", "utf8", "pilot.py", "doctor"], "problemMatcher": []},
-    {"label": "运行基础测试", "type": "process", "command": "${workspaceFolder}/.venv/Scripts/python.exe", "args": ["-X", "utf8", "-m", "unittest", "-v"], "problemMatcher": []}
+    {"label": "查看已有结果（不运行模型）", "type": "process", "command": "${workspaceFolder}/.venv/Scripts/python.exe", "args": ["-X", "utf8", "-m", "risk_text_pilot", "results"], "options": {"cwd": "${workspaceFolder}"}, "problemMatcher": []},
+    {"label": "核查运行环境", "type": "process", "command": "${workspaceFolder}/.venv/Scripts/python.exe", "args": ["-X", "utf8", "-m", "risk_text_pilot", "doctor"], "options": {"cwd": "${workspaceFolder}"}, "problemMatcher": []},
+    {"label": "运行离线测试", "type": "process", "command": "${workspaceFolder}/.venv/Scripts/python.exe", "args": ["-X", "utf8", "-m", "risk_text_pilot", "test"], "options": {"cwd": "${workspaceFolder}"}, "problemMatcher": []}
   ]
 }

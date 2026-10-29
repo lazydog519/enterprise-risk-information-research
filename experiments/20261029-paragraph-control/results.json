@@ -7,7 +7,7 @@
   "independent_development_cases": 1,
   "model": "Qwen/Qwen3-4B-GGUF",
   "quantization": "Q4_K_M",
-  "asset_manifest": "../../assets.json",
+  "asset_manifest": "../../configs/assets.json",
   "parameters": {"temperature": 0, "seed": 42, "max_tokens": 1800, "timeout_seconds": 480},
   "prompt_sha256": {
     "original": "cb793410bb4833bc9898c6a2c981017d52411cc23f9dc58e25e602dc70ca0e43",

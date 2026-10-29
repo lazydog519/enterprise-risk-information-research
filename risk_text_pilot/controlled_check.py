@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import re
 
-import pilot
+from . import pilot
 
 
 def normalize(text):
@@ -48,10 +48,10 @@ def paragraph_blocks(plain, layout):
 
 
 def snapshots(root):
-    paths = [pilot.ROOT / 'prompt.txt']
+    paths = [root / 'prompts/baseline.txt']
     for folder in ('20261029_catl_smoke', '20261029_catl_short_smoke'):
-        paths.extend(sorted((pilot.ROOT / 'runs' / folder).rglob('*')))
-    return {str(p.relative_to(pilot.ROOT)): pilot.sha256(p.read_bytes()) for p in paths if p.is_file()}
+        paths.extend(sorted((root / 'runs' / folder).rglob('*')))
+    return {str(p.relative_to(root)): pilot.sha256(p.read_bytes()) for p in paths if p.is_file()}
 
 
 def prepare(destination):
@@ -80,7 +80,7 @@ def prepare(destination):
     if previous.exists():
         old = pilot.rows(previous)[0]
     else:
-        source = pilot.load(pilot.ROOT / 'public_pilot_sources.json')['sources'][0]
+        source = pilot.load(pilot.ROOT / 'configs/data-sources.json')['sources'][0]
         original_page = next(p for p in pages if p['sha256'] == source['sha256'] and p['page'] == 40)
         old = {**original_page, 'sample_id': original_page['source_id'] + '-p40-0',
                'text': original_page['text'][:500], 'start_char': 0, 'end_char': 500}
@@ -102,7 +102,7 @@ def prepare(destination):
                      'selection_group': 'matched_development_control', 'label_status': 'unreviewed',
                      'sampling_note': 'One shared development case; not independent test observations'})
         pilot.save_rows(destination / f'input_{name}.jsonl', [item])
-        prompt = pilot.ROOT / ('prompts/claim_protocol_v1.txt' if clarified else 'prompt.txt')
+        prompt = pilot.ROOT / ('prompts/claim_protocol_v1.txt' if clarified else 'prompts/baseline.txt')
         cells.append({'cell': name, 'complete_paragraphs': complete, 'clarified_protocol': clarified,
                       'input_file': f'input_{name}.jsonl', 'input_sha256': pilot.sha256(item['text'].encode()),
                       'prompt_file': str(prompt), 'prompt_sha256': pilot.sha256(prompt.read_bytes()),
@@ -134,7 +134,10 @@ def run(destination):
 
 def verify_old(design):
     for path, digest in design['old_file_hashes'].items():
-        if pilot.sha256((pilot.ROOT / path).read_bytes()) != digest:
+        target = pilot.ROOT / path
+        if not target.exists() and path == 'prompt.txt':
+            target = pilot.ROOT / 'prompts/baseline.txt'
+        if pilot.sha256(target.read_bytes()) != digest:
             raise ValueError('Preserved file changed: ' + path)
 
 
@@ -204,13 +207,17 @@ def report(destination, prefix='comparison'):
     print(json.dumps(summary, ensure_ascii=False), flush=True)
 
 
-if __name__ == '__main__':
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['prepare', 'run', 'report'])
     parser.add_argument('--out', required=True, type=Path)
     parser.add_argument('--report-name', default='comparison', choices=['comparison', 'review'])
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.action == 'report':
         report(args.out, prefix=args.report_name)
     else:
         {'prepare': prepare, 'run': run}[args.action](args.out)
+
+
+if __name__ == '__main__':
+    main()

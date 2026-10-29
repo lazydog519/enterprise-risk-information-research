@@ -1,6 +1,6 @@
 param([switch]$Background, [switch]$Stop)
 $ErrorActionPreference = 'Stop'
-$projectRoot = $PSScriptRoot
+$projectRoot = Split-Path -Parent $PSScriptRoot
 $serverPath = Join-Path $projectRoot '.runtime\llama-b11960-cpu\llama-server.exe'
 $pidPath = Join-Path $projectRoot '.runtime\server.pid'
 if ($Stop) {
@@ -16,12 +16,12 @@ if ($Stop) {
 }
 $settingsPath = Join-Path $projectRoot 'settings.local.json'
 if (!(Test-Path -LiteralPath $serverPath) -or !(Test-Path -LiteralPath $settingsPath)) {
-    throw 'Run bootstrap_local.py and verify the model download first.'
+    throw 'Run python -m risk_text_pilot bootstrap --model-dir MODEL_DIRECTORY first.'
 }
 $localSettings = Get-Content -LiteralPath $settingsPath -Raw | ConvertFrom-Json
 $keyPath = Join-Path $projectRoot '.runtime\inference.key'
 if (!(Test-Path -LiteralPath $keyPath -PathType Leaf)) {
-    throw 'Rerun bootstrap_local.py to create the project-local inference key.'
+    throw 'Rerun python -m risk_text_pilot bootstrap to create the project-local inference key.'
 }
 $modelPath = [string]$localSettings.model_path
 if (!(Test-Path -LiteralPath $modelPath -PathType Leaf) -or $modelPath.Contains('"')) {

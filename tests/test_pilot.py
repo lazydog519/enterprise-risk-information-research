@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-import pilot
+from risk_text_pilot import pilot
 
 
 def valid_prediction():
@@ -113,7 +113,7 @@ class PilotTests(unittest.TestCase):
             self.assertIsNone(pilot.rows(root / 'run' / 'annotation_a.jsonl')[0]['reference_records'])
 
     def test_partial_download_resumes_and_hashes(self):
-        import bootstrap_local
+        from risk_text_pilot import bootstrap_local
         import io
 
         class Response(io.BytesIO):
@@ -126,7 +126,7 @@ class PilotTests(unittest.TestCase):
             target = Path(folder) / 'asset.bin'
             spec = {'url': 'https://official.example/asset', 'size': 6, 'sha256': pilot.sha256(b'abcdef')}
             responses = [Response(b'abc', 200, {}), Response(b'def', 206, {'Content-Range': 'bytes 3-5/6'})]
-            with patch('bootstrap_local.urllib.request.urlopen', side_effect=responses) as get:
+            with patch('risk_text_pilot.bootstrap_local.urllib.request.urlopen', side_effect=responses) as get:
                 bootstrap_local.download(spec, target)
             self.assertEqual(target.read_bytes(), b'abcdef')
             self.assertEqual(get.call_args_list[1].args[0].get_header('Range'), 'bytes=3-')

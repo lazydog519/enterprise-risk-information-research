@@ -9,8 +9,8 @@
 |数据登记范围|PDF第14—41页|
 |实验单位|同一文本片段的四种处理|
 |输入因素|旧500字符；补全至四个完整段落的593字符|
-|规则因素|[旧提示词](../../prompt.txt)；[明确规则](../../prompts/claim_protocol_v1.txt)|
-|模型|Qwen3-4B Q4_K_M，固定版本见 [assets.json](../../assets.json)|
+|规则因素|[旧提示词](../../prompts/baseline.txt)；[明确规则](../../prompts/claim_protocol_v1.txt)|
+|模型|Qwen3-4B Q4_K_M，固定版本见 [assets.json](../../configs/assets.json)|
 |参数|temperature=0，seed=42，max_tokens=1800，timeout=480秒|
 |输出|主体、事项、关系、状态、时间、证据、缺失信息；上下文缺失标记|
 
@@ -35,4 +35,4 @@ C组原始JSON有11个未通过校验的候选，字段名写错，并出现关�
 
 ## 复现与文件
 
-数据来源见 [清单](../../public_pilot_sources.json)，核验标准见 [规范](../../docs/annotation-protocol.md)。运行命令见仓库根目录README。原始输出保存在本机 `runs/20261029_paragraph_control_v1/`，结构化摘要见 [results.json](results.json)。
+数据来源见 [清单](../../configs/data-sources.json)，核验标准见 [规范](../../docs/annotation-protocol.md)。运行命令见仓库根目录README。原始输出保存在本机 `runs/20261029_paragraph_control_v1/`，结构化摘要见 [results.json](results.json)。

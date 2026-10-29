@@ -8,7 +8,7 @@ import secrets
 import urllib.request
 import zipfile
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def digest(path):
@@ -60,12 +60,12 @@ def download(spec, target):
     print(f'SHA256 verified: {target.name}', flush=True)
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-dir', type=Path, required=True)
     parser.add_argument('--runtime-only', action='store_true')
-    args = parser.parse_args()
-    specs = json.loads((ROOT / 'assets.json').read_text(encoding='utf-8'))
+    args = parser.parse_args(argv)
+    specs = json.loads((ROOT / 'configs/assets.json').read_text(encoding='utf-8'))
     archive = ROOT / '.runtime' / 'llama-b11960-cpu.zip'
     download(specs['runtime'], archive)
     runtime = ROOT / '.runtime' / 'llama-b11960-cpu'

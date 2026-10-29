@@ -1,4 +1,5 @@
 {
+  "schema_version": "1.0",
   "dataset_role": "development_case",
   "sources": [
     {

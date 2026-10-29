@@ -14,7 +14,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 STATUSES = {'确定', '可能或条件成立', '明确否定', '无法判断'}
 KEYWORDS = ('风险', '不确定', '供应', '中断', '短缺', '制裁', '限制', '原材料', '价格波动', '停产', '减产', '不利影响', '需求下降')
 FIELDS = {'entity', 'event', 'relationship', 'status', 'event_time', 'evidence', 'unknowns'}
@@ -264,12 +264,12 @@ def infer(args):
     if not models:
         raise ValueError('Local server has no loaded model')
     model = models[0]['id']
-    prompt_path = Path(getattr(args, 'prompt_file', None) or ROOT / 'prompt.txt')
+    prompt_path = Path(getattr(args, 'prompt_file', None) or ROOT / 'prompts/baseline.txt')
     prompt = prompt_path.read_text(encoding='utf-8')
     run = Path(args.run_dir)
     run.mkdir(parents=True, exist_ok=False)
     save(run / 'manifest.json', {'started_at': utc(), 'model': model,
-                                 'assets': load(ROOT / 'assets.json'),
+                                 'assets': load(ROOT / 'configs/assets.json'),
                                  'prompt': prompt, 'prompt_sha256': sha256(prompt.encode()),
                                  'prompt_file': str(prompt_path.resolve()),
                                  'max_tokens': args.max_tokens, 'timeout': args.timeout,
@@ -344,7 +344,7 @@ def audit(args):
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     p = sub.add_parser('doctor'); p.set_defaults(func=doctor)
@@ -359,12 +359,12 @@ def main():
     p.add_argument('--limit', type=int, default=12); p.add_argument('--seed', type=int, default=42); p.add_argument('--width', type=int, default=1200); p.set_defaults(func=sample)
     p = sub.add_parser('infer'); p.add_argument('--samples', default='data/samples.jsonl'); p.add_argument('--run-dir', required=True)
     p.add_argument('--sample-id', action='append', help='Optional explicit development sample ID; repeat for several')
-    p.add_argument('--prompt-file', help='Explicit versioned prompt; default preserves prompt.txt')
+    p.add_argument('--prompt-file', help='Explicit versioned prompt; default uses prompts/baseline.txt')
     p.add_argument('--limit', type=int, default=3); p.add_argument('--seed', type=int, default=42)
     p.add_argument('--max-tokens', type=int, default=1200); p.add_argument('--timeout', type=int, default=300); p.set_defaults(func=infer)
     p = sub.add_parser('audit'); p.add_argument('--run-dir', required=True)
     p.add_argument('--out-dir', help='Write a fresh review folder without overwriting a previous audit'); p.set_defaults(func=audit)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if hasattr(args, 'limit') and args.limit < 1:
         parser.error('--limit must be positive')
     if hasattr(args, 'page_start') and (args.page_start < 1 or (args.page_end is not None and args.page_end < args.page_start)):
