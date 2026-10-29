@@ -53,6 +53,7 @@ python -m venv .venv
 查看`runs/第一次试跑/review.html`，同时回查原PDF；不要把格式成功率当准确率。
 `annotation_a.jsonl`和`annotation_b.jsonl`供两人独立标注，未标注为null，不会自动写成正确标签。
 现阶段只计算格式失败和引用定位；语义错误率与校准误差保持null。
+重新生成审阅页时可用`pilot.py audit --run-dir 原运行目录 --out-dir 新审阅目录`，保留原始输出不覆盖；运行细节默认折叠。
 
 若需查找旧资料，可执行：
 

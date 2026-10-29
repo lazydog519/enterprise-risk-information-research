@@ -307,6 +307,8 @@ def infer(args):
 
 def audit(args):
     run = Path(args.run_dir)
+    destination = Path(getattr(args, 'out_dir', None) or run)
+    destination.mkdir(parents=True, exist_ok=True)
     inputs = {s['sample_id']: s for s in rows(run / 'inputs.jsonl')}
     predictions = rows(run / 'predictions.jsonl')
     seen = set()
@@ -322,16 +324,18 @@ def audit(args):
                'quotes_not_located': sum(not c['found'] for c in checks),
                'semantic_error_rate': None, 'calibration_error': None,
                'interpretation': 'Quote location is a mechanical check only; semantic correctness and error probability require independent annotation.'}
-    save(run / 'audit.json', summary)
+    save(destination / 'audit.json', summary)
     blocks = ['<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>企业风险文本试读</title><style>body{max-width:1000px;margin:30px auto;font:16px/1.7 system-ui;color:#202020}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f5f5;padding:16px}article{margin:40px 0;border-top:1px solid #ddd}h1,h2{color:#111}</style><h1>企业风险文本试读</h1><p>以下是模型候选输出。引用定位通过不代表语义正确。人工参照尚未建立。</p>', '<pre>' + html.escape(json.dumps(summary, ensure_ascii=False, indent=2)) + '</pre>']
     for row in predictions:
         item = inputs[row['sample_id']]
+        visible = {key: row[key] for key in ('status', 'error', 'prediction', 'evidence_checks') if key in row}
         blocks.extend(['<article><h2>' + html.escape(item['company']) + ' · PDF页码 ' + str(item['page']) + '</h2>',
                        '<p>' + html.escape(item['sample_id']) + ' / ' + html.escape(item['selection_group']) + '</p>',
                        '<h3>原文</h3><pre>' + html.escape(item['text']) + '</pre>',
-                       '<h3>候选输出与机械核查</h3><pre>' + html.escape(json.dumps(row, ensure_ascii=False, indent=2)) + '</pre></article>'])
+                       '<h3>候选输出与机械核查</h3><pre>' + html.escape(json.dumps(visible, ensure_ascii=False, indent=2)) + '</pre>',
+                       '<details><summary>原始回答与运行细节</summary><pre>' + html.escape(json.dumps(row, ensure_ascii=False, indent=2)) + '</pre></details></article>'])
     blocks.append('</html>')
-    with (run / 'review.html').open('x', encoding='utf-8') as output:
+    with (destination / 'review.html').open('x', encoding='utf-8') as output:
         output.write('\n'.join(blocks))
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
@@ -353,7 +357,8 @@ def main():
     p.add_argument('--sample-id', action='append', help='Optional explicit development sample ID; repeat for several')
     p.add_argument('--limit', type=int, default=3); p.add_argument('--seed', type=int, default=42)
     p.add_argument('--max-tokens', type=int, default=1200); p.add_argument('--timeout', type=int, default=300); p.set_defaults(func=infer)
-    p = sub.add_parser('audit'); p.add_argument('--run-dir', required=True); p.set_defaults(func=audit)
+    p = sub.add_parser('audit'); p.add_argument('--run-dir', required=True)
+    p.add_argument('--out-dir', help='Write a fresh review folder without overwriting a previous audit'); p.set_defaults(func=audit)
     args = parser.parse_args()
     if hasattr(args, 'limit') and args.limit < 1:
         parser.error('--limit must be positive')
