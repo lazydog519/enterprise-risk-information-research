@@ -264,12 +264,16 @@ def infer(args):
     if not models:
         raise ValueError('Local server has no loaded model')
     model = models[0]['id']
-    prompt = (ROOT / 'prompt.txt').read_text(encoding='utf-8')
+    prompt_path = Path(getattr(args, 'prompt_file', None) or ROOT / 'prompt.txt')
+    prompt = prompt_path.read_text(encoding='utf-8')
     run = Path(args.run_dir)
     run.mkdir(parents=True, exist_ok=False)
     save(run / 'manifest.json', {'started_at': utc(), 'model': model,
                                  'assets': load(ROOT / 'assets.json'),
                                  'prompt': prompt, 'prompt_sha256': sha256(prompt.encode()),
+                                 'prompt_file': str(prompt_path.resolve()),
+                                 'max_tokens': args.max_tokens, 'timeout': args.timeout,
+                                 'server_model_metadata': models[0],
                                  'temperature': 0, 'seed': args.seed,
                                  'selected_sample_ids': [s['sample_id'] for s in inputs],
                                  'semantic_labels_available': False,
@@ -355,6 +359,7 @@ def main():
     p.add_argument('--limit', type=int, default=12); p.add_argument('--seed', type=int, default=42); p.add_argument('--width', type=int, default=1200); p.set_defaults(func=sample)
     p = sub.add_parser('infer'); p.add_argument('--samples', default='data/samples.jsonl'); p.add_argument('--run-dir', required=True)
     p.add_argument('--sample-id', action='append', help='Optional explicit development sample ID; repeat for several')
+    p.add_argument('--prompt-file', help='Explicit versioned prompt; default preserves prompt.txt')
     p.add_argument('--limit', type=int, default=3); p.add_argument('--seed', type=int, default=42)
     p.add_argument('--max-tokens', type=int, default=1200); p.add_argument('--timeout', type=int, default=300); p.set_defaults(func=infer)
     p = sub.add_parser('audit'); p.add_argument('--run-dir', required=True)

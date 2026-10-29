@@ -10,7 +10,7 @@ DocFEE仅是辅助机制资源；论文、项目申请书、AI生成稿不进入
 本阶段不实现RAG/Agent、独立风险传播模型、韧性评价、强化学习、迁移学习或模型训练。
 
 本地模型是可替换的 **Qwen3-4B Q4_K_M推理基线**，不是论文最终模型。推理结果不是人工真值。
-`status`是原文表达的发生状态，不是模型信心。引用匹配仅确认文字能定位，不能证明语义正确。
+`status`是原文主要判断的陈述状态，不是模型信心。引用匹配仅确认文字能定位，不能证明语义正确。
 
 旧企业报告尚未定位。本轮新增宁德时代2025年年报，用管理层讨论与分析部分做连通性试读；来源和哈希见`public_pilot_sources.json`，不将其当作最终主体数据集。
 
@@ -62,6 +62,21 @@ python -m venv .venv
 ```
 
 所有生成文件默认拒绝覆盖。重新试验请更换输出路径/运行目录，不删除旧结果。
+
+## 当前段落对照
+
+研究口径、陈述定义和逐项人工核验规则见 [protocol.md](protocol.md)。当前对照只使用已纳入的PDF第14—41页，不扩大语料。
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 controlled_check.py prepare --out runs\新的对照目录
+.\.venv\Scripts\python.exe -X utf8 -u controlled_check.py run --out runs\新的对照目录
+```
+
+`prepare`按PDF版式空行重建段落候选，并映射到原提取文本的页内字符位置；表格、跨页及无法映射的块保留待核验标记。第40页四个段落已对照原文，用于2×2对照，其他块不是审定的段落真值。旧500字符输入和旧提示词均保留。
+
+运行后的 `comparison.html` 是人读的四组对照页面，在浏览器打开；`protocol.md` 可在VS Code用 Ctrl+Shift+V 预览。`paragraphs.jsonl`、`predictions.jsonl`和`manifest.json`供程序追溯；`.runtime`里的DLL是模型运行组件，不是研究结果，不需要打开。两人核验模板保持空白，助手试读与正式标注分别保存。
+
+当前已运行目录为 `runs/20261029_paragraph_control_v1`。该目录的 `review.html` 合并逐项试读判断与四组原始对照，是优先阅读入口；C为字段校验失败，D为生成长度失败，均保留原答，不记作空结果成功。仅有助手核对结论，尚无人类金标准。
 
 ## 版本与资料管理
 
